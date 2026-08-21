@@ -1,9 +1,7 @@
 # Who we sell to
 
-*Replace this file with your own ICP. Written as Instantly.ai, as an example.*
-
-This file decides every score. Be specific — a vague ICP produces a list where 44% of people come back
-labelled "buyer", which is the same as having no ranking at all.
+This file decides every score. Apply it strictly: if a person does not clearly match one of the segments
+below, they are not a buyer, however good their title sounds.
 
 ## Best customers, in order
 
@@ -47,6 +45,5 @@ Snov.io, Hunter, Mailreef, Piperlink.
 An agency running campaigns on Smartlead is a prospect we should be trying to win, not a competitor. A
 company building a Smartlead alternative is a competitor no matter how good their title looks.
 
-Getting this backwards is the most expensive mistake available here: on a live run, a well-known outbound
-agency was scored 92 as a buyer under one reading and 0 as a competitor under another. Only one of those
-is right, and it is the buyer.
+When in doubt, ask what the company charges its own customers for. If the answer is software that sends or
+sequences email, they compete with us. If the answer is campaigns, strategy or headcount, they buy from us.

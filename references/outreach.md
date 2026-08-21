@@ -1,7 +1,5 @@
 # Openers
 
-*Replace with your own voice. Written as Instantly.ai, as an example.*
-
 Only the top few leads get an opener. Draft one when their own words give you something to react to;
 otherwise say so rather than inventing a hook.
 

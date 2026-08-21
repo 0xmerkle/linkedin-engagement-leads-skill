@@ -1,7 +1,5 @@
 # What we sell
 
-*Replace this file with your own company. Everything here is an example, written as Instantly.ai.*
-
 ## Instantly.ai
 
 A cold-email outreach platform. Four things in one product:

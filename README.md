@@ -41,6 +41,28 @@ everyone comes back labelled "buyer", which is the same as having no ranking at 
 
 Then put your IDs in `references/setup.md`: the Apify Actor, your targets sheet, and the Drive folder.
 
+## What's in here
+
+```
+SKILL.md              the procedure the agent follows
+references/
+  company.md          what we sell
+  icp.md              who we sell to, and who competes with us
+  outreach.md         voice, and a worked example
+  setup.md            Actor ID, Drive IDs, exact tool-call shapes
+scripts/
+  run-actor.mjs       run the Actor, page the dataset, save the result
+  filter-new.mjs      drop anyone surfaced in an earlier run
+  to-sheet-csv.mjs    scored JSON to correctly-quoted CSV
+```
+
+The scripts are plain Node with **no dependencies** — nothing to install. They exist so the agent spends
+its tokens on judgement rather than on pagination, polling and CSV quoting. That last one is not
+cosmetic: LinkedIn comments routinely contain commas, quotation marks and newlines, and a hand-assembled
+CSV row breaks silently, shifting every column from that row onward.
+
+Google Drive has no scriptable path here, so reading targets and writing results stay as connector calls.
+
 ## Requires
 
 - The `linkedin-engagement-leads` Apify Actor, and an Apify token
