@@ -65,7 +65,8 @@ Google Drive has no scriptable path here, so reading targets and writing results
 
 ## Requires
 
-- The `linkedin-engagement-leads` Apify Actor, and an Apify token
+- The `linkedin-engagement-leads` Apify Actor, and `APIFY_TOKEN` exported in your shell
+  (the scripts read that variable only — they never read stored credential files)
 - A Google Drive connector, for reading targets and writing results
 - A Google Sheet with one column of LinkedIn URLs — profiles or company pages, mixed freely
 

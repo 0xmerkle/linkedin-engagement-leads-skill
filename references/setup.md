@@ -6,9 +6,17 @@
 numerous_hierarchy/linkedin-engagement-leads
 ```
 
-Needs an Apify token. Prefer the Apify MCP `call-actor` tool; `apify call <actor> --input '<json>'` via the
-shell works too but the output is harder to parse. The Actor needs no other credentials — there is no
-model inside it.
+Call it with `scripts/run-actor.mjs`, which needs **`APIFY_TOKEN` in the environment**:
+
+```bash
+export APIFY_TOKEN=apify_api_...
+```
+
+The script reads that variable and nothing else. It deliberately does not fall back to the Apify CLI's
+stored credentials — a script should not go looking through credential files it was never pointed at, even
+when the file is right there. If the variable is unset the script says so and stops.
+
+The Actor needs no other credentials; there is no model inside it.
 
 Inputs: `targets` (required), `postedWithin` (`24h` | `48h` | `week` | `2weeks` | `month`, default
 `week`), `maxEngagersPerPost` (1–100, default 30), `excludeJobSeekers` (default true).
