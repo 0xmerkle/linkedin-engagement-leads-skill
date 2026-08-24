@@ -29,11 +29,10 @@ anything worth embedding in a scraper.
 git clone <this repo> ~/.claude/skills/linkedin-engagement-leads
 ```
 
-Then edit the three files that describe your business:
+Then edit the two files that describe your business:
 
 - `references/company.md` — what you sell
 - `references/icp.md` — who you sell to, and who your competitors are
-- `references/outreach.md` — your voice
 
 They ship filled in as an example (written as Instantly.ai) so you can see the level of detail that
 works. **`references/icp.md` is the one that matters** — a vague ICP produces a list where nearly half of
@@ -48,7 +47,6 @@ SKILL.md              the procedure the agent follows
 references/
   company.md          what we sell
   icp.md              who we sell to, and who competes with us
-  outreach.md         voice, and a worked example
   setup.md            Actor ID, Drive IDs, exact tool-call shapes
 scripts/
   run-actor.mjs       run the Actor, page the dataset, save the result
