@@ -45,8 +45,8 @@ Needs `APIFY_TOKEN`. Polls to completion, pages the dataset, saves the people an
 `--posted-within` only when a run comes back nearly empty.
 
 **Say what a run will cost before starting a large one.** Billing is per upstream result, roughly
-`(posts fetched + people found + profiles looked up) × $0.005`. Three targets on a week at `--max 20`
-costs about **$3**. Do not quietly spend multiples of that.
+`(posts fetched + people found + profiles looked up) × USD 0.005`. Three targets on a week at `--max 20`
+costs about **USD 3**. Do not quietly spend multiples of that.
 
 ### 3. Exclude anyone already surfaced
 
