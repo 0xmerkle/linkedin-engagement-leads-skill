@@ -50,8 +50,12 @@ costs about **$3**. Do not quietly spend multiples of that.
 
 ### 3. Exclude anyone already surfaced
 
-List the output folder from `references/setup.md` with `search_files`, read each prior run sheet, and
-collect its `leadId` values into `seen.txt`, one per line. Skip the targets sheet.
+List the output folder from `references/setup.md` with `search_files`, read the prior run sheets, and
+collect their `leadId` values into `seen.txt`, one per line. Skip the targets sheet.
+
+Read the **`Seen YYYY-MM-DD`** sheets. Each is one `leadId` column and a few KB, and it holds every person
+that run scored. Only fall back to a `Leads YYYY-MM-DD` sheet for a date that has no `Seen` sheet beside it —
+those are runs from before the split, and they are ten times the size for the same dedupe keys.
 
 ```bash
 node scripts/filter-new.mjs --run run.json --seen seen.txt --out new.json
@@ -85,17 +89,41 @@ ends in a question mark, and a long third-person take on the industry reveals no
 ### 5. Build the CSV
 
 ```bash
-node scripts/to-sheet-csv.mjs --scored scored.json --out leads.csv
+node scripts/to-sheet-csv.mjs --scored scored.json --out leads.csv \
+  --seen-out seen-out.csv --max-bytes 51200 --drop postUrl
 ```
 
 Sorts by fit, then by whether they wrote something, then frequency. It also quotes correctly. LinkedIn
 comments contain commas, quotation marks and newlines, and a hand-assembled row breaks *silently*. The
 sheet just shifts columns from some row onward.
 
-### 6. Write it to Drive
+It writes **two** files, because the sheet was doing two unrelated jobs:
 
-`create_file` with the contents of `leads.csv`, `contentMimeType: "text/csv"`, `parentId` set to the output
-folder, titled `Leads YYYY-MM-DD`. Drive converts it to a real spreadsheet.
+- `leads.csv` — the ranked shortlist, the thing a person opens and works.
+- `seen-out.csv` — one `leadId` per line for **every** person scored, including the ones the budget cut.
+  This is the dedupe record. Trimming the sheet must never trim the memory of who was seen, or everyone
+  below the floor comes back on every future run.
+
+`--max-bytes 51200` raises the fit floor in steps of 5 until the sheet fits ~50KB, and prints a note when
+it has to. Pass that note on in step 7: a run that quietly shipped the top 40 instead of the top 300 is
+worth knowing about.
+
+### 6. Write both to Drive
+
+Two `create_file` calls, `contentMimeType: "text/csv"`, `parentId` set to the output folder. Drive converts
+each to a real spreadsheet.
+
+| file | title |
+| --- | --- |
+| `leads.csv` | `Leads YYYY-MM-DD` |
+| `seen-out.csv` | `Seen YYYY-MM-DD` |
+
+**Keep every write under ~50KB.** The Drive connector takes content only as text inside the tool call, so
+every byte is a byte you have to generate. 50KB is roughly 13,000 output tokens and already a slow minute of
+silence; 160KB cannot complete in one call at all. Step 5's budget exists to hold that line — do not raise it
+to "get everything in", and do not work around a too-large sheet by splitting it across several files. Lower
+`--max-bytes` instead. A shorter, better sheet beats two half-sheets nobody opens, and the full record is on
+disk either way.
 
 A **new file**, not a tab on the targets sheet. The Drive connector cannot write into an existing
 spreadsheet, and separate files mean a bad run can never touch the target list.
@@ -108,6 +136,7 @@ In chat, give the user:
 - How many were new versus already seen
 - The count scoring 70+
 - The link to the new sheet
+- Whether step 5 had to raise the fit floor to fit the budget, and how many rows that left out of the sheet
 - **The top 5 leads**, each with their title, employer and the line they actually wrote
 
 Write an opener only for leads that earned a `whyNow`. No `whyNow` means they gave you nothing to react
